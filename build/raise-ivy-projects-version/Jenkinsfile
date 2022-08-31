@@ -43,9 +43,9 @@ pipeline {
               }
             }            
           }
-          def errors = readFile 'build/raise-ivy-projects-version/conversionError.txt'
-          if (errors != null && errors != "") {
-            error 'build finished with errors: \n' + errors
+          def conversionError = readFile 'build/raise-ivy-projects-version/conversionError.txt'
+          if (conversionError?.trim()) {
+            error 'build finished with errors: \n' + conversionError
           }
         }
       }
