@@ -62,6 +62,8 @@ function raiseVersionOfOurRepos {
     "git@github.com:axonivy/inscription-client.git"
     "git@github.com:axonivy/core.git"
     "git@github.com:axonivy/thirdparty-libs.git"
+    "git@github.com:axonivy/theia-ide.git"
+    "git@github.com:axonivy/vscode-extensions.git"
   )
   message="Raise version to ${newVersion}"
   runRepoUpdate 'updateSingleRepo' ${repos[@]}

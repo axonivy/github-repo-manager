@@ -85,6 +85,8 @@ function backup_escrow()
   cloneRepository $gitHubAxonIvyRepo 'docker-samples'
   cloneRepository $gitHubAxonIvyRepo 'website-developer'
   cloneRepository $gitHubAxonIvyRepo 'website-p2'
+  cloneRepository $gitHubAxonIvyRepo 'theia-ide'
+  cloneRepository $gitHubAxonIvyRepo 'vscode-extensions'
 }
 
 function compressAllFiles()
