@@ -70,7 +70,7 @@ function raiseVersionOfOurRepos {
 }
 
 function updateSingleRepo {
-  .ivy/raise-version.sh ${newVersion}
+  .ivy/raise-version.sh ${newVersion} ${dryRun}
   git commit -a -m "Raise version to ${newVersion}"
 }
 
