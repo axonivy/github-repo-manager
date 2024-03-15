@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-shopt -s globstar
+shopt +s globstar
 #
 # Param 1: Sed Regexp param (required)
 #   e.g.: s#search#replace#g
