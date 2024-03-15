@@ -1,0 +1,50 @@
+pipeline {
+  agent {
+    dockerfile {
+      dir 'build'
+    }
+  }
+
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
+  }
+
+  triggers {
+    cron '@midnight'
+  }
+  
+  parameters {
+    booleanParam name: 'dryRun', defaultValue: true, description: 'whether the build should push the changes or not'
+    string(name: 'sedRegexp', defaultValue: '', description: 'The sed replacement: s#search#replace#g')
+    string(name: 'fileSelector', defaultValue: '', description: 'Bash file selector e.g. folder/**/File.*')
+    string(name: 'sourceBranch', defaultValue: 'master', description: 'The branch to apply this change on e.g. master, release/11.1, release/10.0')
+    string(name: 'newBranch', defaultValue: 'replace', description: 'The name of the new branch, which gets pushed if it is not a dry run')
+    string(name: 'commitMessage', defaultValue: '', description: 'The commit message')
+  }
+
+  stages {
+    stage('replace') {
+      when {
+        expression { !params.sedRegexp.isEmpty() && !params.fileSelector.isEmpty() }
+      }
+      steps {        
+        script {
+          currentBuild.description = "branch: ${params.sourceBranch} dryRun: ${params.dryRun}"
+          sh "git config --global user.name 'ivy-team'"
+          sh "git config --global user.email 'info@ivyteam.ch'"
+          withEnv(['GIT_SSH_COMMAND=ssh -o StrictHostKeyChecking=no']) {
+            withCredentials([file(credentialsId: 'github-ivyteam-token-repo-manager', variable: 'GITHUB_TOKEN_FILE')]) {
+              sshagent(credentials: ['github-axonivy']) {
+                sh """
+                  export DRY_RUN=${params.dryRun}
+                  build/replace/replace.sh "${params.sedRegexp}" "${params.fileSelector}" "${params.sourceBranch}" "${params.newBranch}" "${params.commitMessage}"
+                """
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
