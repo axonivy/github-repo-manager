@@ -20,14 +20,14 @@ public class GitHubMissingFilesDetector {
   private static final String GITHUB_ORG = ".github";
   private final byte[] fileContent;
   private boolean isMissingRequiredFile;
-  private List<String> workingRepos;
+  private List<String> workingOrgs;
   private FileMeta requestFileMeta;
 
-  public GitHubMissingFilesDetector(FileMeta fileMeta, List<String> workingRepos) throws IOException {
+  public GitHubMissingFilesDetector(FileMeta fileMeta, String... workingOrg) throws IOException {
     Objects.requireNonNull(fileMeta);
-    Objects.requireNonNull(workingRepos);
+    Objects.requireNonNull(workingOrg);
     this.requestFileMeta = fileMeta;
-    this.workingRepos = workingRepos;
+    this.workingOrgs = List.of(workingOrg);
     try (var is = GitHubMissingFilesDetector.class.getResourceAsStream(requestFileMeta.filePath())) {
       if (is == null) {
         throw new IOException(requestFileMeta.filePath() + " file not found");
@@ -38,8 +38,8 @@ public class GitHubMissingFilesDetector {
 
   public int checkMissingFile() throws IOException {
     var github = GitHubProvider.get();
-    printInfoMessage("Working on organizations: {0}.", workingRepos);
-    for (var orgName : workingRepos) {
+    printInfoMessage("Working on organizations: {0}.", workingOrgs);
+    for (var orgName : workingOrgs) {
       var org = github.getOrganization(orgName);
       for (var repo : List.copyOf(org.getRepositories().values())) {
         checkMissingFile(repo);

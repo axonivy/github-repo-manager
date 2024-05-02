@@ -5,22 +5,25 @@ import static com.axonivy.github.file.GitHubFiles.LICENSE;
 import static com.axonivy.github.file.GitHubFiles.SECURITY;
 
 import java.io.IOException;
-import java.util.List;
-
-import com.axonivy.github.file.GitHubFiles.FileMeta;
 
 public class GitHubMissingFiles {
 
-  private static final List<String> WORKING_ORGANIZATIONS = List.of("axonivy", "axonivy-market");
-  private static final List<FileMeta> REQUIRED_FILES = List.of(LICENSE, SECURITY, CODE_OF_CONDUCT);
+  private static final String AXONIVY_ORG = "axonivy";
+  private static final String MARKET_ORG = "axonivy-market";
 
   public static void main(String[] args) throws IOException {
     int missingStatus = 0;
-    for (var fileMeta : REQUIRED_FILES) {
-      var githubMissingFiles = new GitHubMissingFilesDetector(fileMeta, WORKING_ORGANIZATIONS);
-      var returnedStatus = githubMissingFiles.checkMissingFile();
-      missingStatus = returnedStatus != 0 ? returnedStatus : missingStatus;
-    }
+    var githubMissingFiles = new GitHubMissingFilesDetector(LICENSE, AXONIVY_ORG);
+    var returnedStatus = githubMissingFiles.checkMissingFile();
+    missingStatus = returnedStatus != 0 ? returnedStatus : missingStatus;
+
+    githubMissingFiles = new GitHubMissingFilesDetector(SECURITY, MARKET_ORG);
+    returnedStatus = githubMissingFiles.checkMissingFile();
+    missingStatus = returnedStatus != 0 ? returnedStatus : missingStatus;
+
+    githubMissingFiles = new GitHubMissingFilesDetector(CODE_OF_CONDUCT, MARKET_ORG);
+    returnedStatus = githubMissingFiles.checkMissingFile();
+    missingStatus = returnedStatus != 0 ? returnedStatus : missingStatus;
     System.exit(missingStatus);
   }
 

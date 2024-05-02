@@ -132,9 +132,9 @@ For answers to common questions about this code of conduct, see the FAQ at
 <https://www.contributor-covenant.org/faq>. Translations are available at
 <https://www.contributor-covenant.org/translations>.
 
-[coc-blog]: https://www.home-assistant.io/blog/2017/01/21/home-assistant-governance/
-[coc2-blog]: https://www.home-assistant.io/blog/2020/05/25/code-of-conduct-updated/
-[email]: mailto:safety@home-assistant.io
-[homepage]: http://contributor-covenant.org
-[mozilla]: https://github.com/mozilla/diversity
-[version]: https://www.contributor-covenant.org/version/2/0/code_of_conduct.html
+[coc-blog]: TODO Sabine
+[coc2-blog]: TODO Sabine
+[email]: TODO Sabine mailto:
+[homepage]: TODO Sabine
+[mozilla]: TODO Sabine
+[version]: TODO Sabine
