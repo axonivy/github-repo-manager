@@ -55,6 +55,9 @@ public class GitHubMissingFilesDetector {
   }
 
   private void checkMissingFile(GHRepository repo) throws IOException {
+    if (GITHUB_ORG.equals(repo.getName())) {
+      return;
+    }
     if (repo.isPrivate() || repo.isArchived()) {
       printInfoMessage("Repo {0} is {1}.", repo.getFullName(), repo.isPrivate() ? "private" : "archived");
       return;
@@ -69,7 +72,7 @@ public class GitHubMissingFilesDetector {
       } else {
         printInfoMessage("Repo {0} has {1}.", repo.getFullName(), foundFile.getName());
       }
-    } else if (!GITHUB_ORG.equals(repo.getName())) {
+    } else {
       addMissingFile(repo);
     }
   }
