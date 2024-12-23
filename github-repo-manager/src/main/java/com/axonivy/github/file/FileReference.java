@@ -1,16 +1,15 @@
 package com.axonivy.github.file;
 
-import java.io.IOException;
-
+import com.axonivy.github.file.GitHubFiles.FileMeta;
 import org.apache.commons.io.IOUtils;
 
-import com.axonivy.github.file.GitHubFiles.FileMeta;
+import java.io.IOException;
 
-
-public record FileReference(FileMeta meta, byte[] content) {
+public class FileReference {
+  FileMeta meta;
 
   public FileReference(FileMeta meta) throws IOException {
-    this(meta, load(meta));
+    this.meta = meta;
   }
 
   private static byte[] load(FileMeta meta) throws IOException {
@@ -22,4 +21,11 @@ public record FileReference(FileMeta meta, byte[] content) {
     }
   }
 
+  public FileMeta meta() {
+    return meta;
+  }
+
+  public byte[] content() throws IOException {
+    return load(meta);
+  }
 }
