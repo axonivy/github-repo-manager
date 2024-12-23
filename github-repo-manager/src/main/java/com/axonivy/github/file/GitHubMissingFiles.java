@@ -1,14 +1,12 @@
 package com.axonivy.github.file;
 
-import static com.axonivy.github.file.GitHubFiles.CODE_OF_CONDUCT;
-import static com.axonivy.github.file.GitHubFiles.LICENSE;
-import static com.axonivy.github.file.GitHubFiles.SECURITY;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 import com.axonivy.github.file.GitHubFiles.FileMeta;
+
+import static com.axonivy.github.file.GitHubFiles.*;
 
 public class GitHubMissingFiles {
 
@@ -33,6 +31,9 @@ public class GitHubMissingFiles {
       var returnedStatus = detector.removeFile(workingOrganizations);
       status = returnedStatus != 0 ? returnedStatus : status;
     }
+    var codeOwnerDetector = new CodeOwnerFilesDetector(CODEOWNERS, user);
+    var returnedStatus = codeOwnerDetector.requireFile(workingOrganizations);
+    status = returnedStatus != 0 ? returnedStatus : status;
     System.exit(status);
   }
 

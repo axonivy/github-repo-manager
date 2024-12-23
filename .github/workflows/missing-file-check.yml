@@ -28,15 +28,12 @@ jobs:
         with:
           java-version: 17
           distribution: temurin
-
-      - name: Setup Maven
-        uses: stCarolas/setup-maven@v5
+          cache: maven
 
       - name: Set default values for dryRun and workingOrgs
-        id: set-defaults
         run: |
           echo "dryRun=${{ github.event.inputs.dryRun || 'true' }}" >> $GITHUB_ENV
-          echo "workingOrgs=${{ github.event.inputs.workingOrgs || 'axonivy-market' }}" >> $GITHUB_ENV        
+          echo "workingOrgs=${{ github.event.inputs.workingOrgs || 'axonivy-market' }}" >> $GITHUB_ENV
 
       - name: Build with Maven
         working-directory: ./github-repo-manager
@@ -47,4 +44,3 @@ jobs:
             -Dexec.mainClass="com.axonivy.github.file.GitHubMissingFiles" \
             -Dexec.args="${{ github.actor }}" \
             -DGITHUB.WORKING.ORGANIZATIONS="${{ env.workingOrgs }}"
-        continue-on-error: true
