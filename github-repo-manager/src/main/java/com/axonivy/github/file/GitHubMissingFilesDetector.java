@@ -82,7 +82,7 @@ public class GitHubMissingFilesDetector {
   }
 
   private boolean hasSimilarContent(GHContent existingFile) throws IOException {
-      Reader targetContent = new CharSequenceReader(new String(loadReferenceFileContent(existingFile.getGitUrl())));
+    Reader targetContent = new CharSequenceReader(new String(loadReferenceFileContent(existingFile.getGitUrl())));
     Reader actualContent;
     try (var inputStream = existingFile.read()) {
       actualContent = new CharSequenceReader(new String(inputStream.readAllBytes()));
@@ -110,11 +110,11 @@ public class GitHubMissingFilesDetector {
     String refURL = createBranchIfMissing(repo, BRANCH_PREFIX + reference.meta().branchName(), defaultBranch.getSHA1());
 
     repo.createContent()
-            .branch(refURL)
-            .path(reference.meta().filePath())
-            .content(loadReferenceFileContent(repo.getUrl().toString()))
-            .message(reference.meta().commitMessage())
-            .commit();
+        .branch(refURL)
+        .path(reference.meta().filePath())
+        .content(loadReferenceFileContent(repo.getUrl().toString()))
+        .message(reference.meta().commitMessage())
+        .commit();
     var pr = repo.createPullRequest(reference.meta().pullRequestTitle(), reference.meta().branchName(), repo.getDefaultBranch(), "");
     if (ghActor != null) {
       pr.setAssignees(ghActor);
@@ -158,15 +158,15 @@ public class GitHubMissingFilesDetector {
     var headBranch = repo.getBranch(repo.getDefaultBranch());
     String refURL = createBranchIfMissing(repo, BRANCH_PREFIX + reference.meta().branchName(), headBranch.getSHA1());
     repo.getFileContent(reference.meta().filePath(), refURL)
-            .update(loadReferenceFileContent(repo.getUrl().toString()),
-                    reference.meta().commitMessage(),
-                    refURL
-            );
+        .update(loadReferenceFileContent(repo.getUrl().toString()),
+            reference.meta().commitMessage(),
+            refURL
+        );
     var pr = repo.createPullRequest(
-            reference.meta().pullRequestTitle(),
-            refURL,
-            repo.getDefaultBranch(),
-            ""
+        reference.meta().pullRequestTitle(),
+        refURL,
+        repo.getDefaultBranch(),
+        ""
     );
     if (ghActor != null) {
       pr.setAssignees(ghActor);
