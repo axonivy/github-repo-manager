@@ -131,7 +131,7 @@ public class GitHubMissingFilesDetector {
         repo.createRef(branchName, sha);
       }
     } catch (IOException e) {
-      LOG.info("Create new ref failed, try one more with {0}", branchName);
+      LOG.error("Create new ref failed, try one more with {0}", branchName);
       return repo.createRef(branchName, sha).getRef();
     }
     return branchName;
