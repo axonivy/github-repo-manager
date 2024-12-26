@@ -31,7 +31,7 @@ public class GitHubMissingFiles {
       var returnedStatus = detector.removeFile(workingOrganizations);
       status = returnedStatus != 0 ? returnedStatus : status;
     }
-    var codeOwnerDetector = new CodeOwnerFilesDetector(CODEOWNERS, user);
+    var codeOwnerDetector = new CodeOwnerFilesDetector(CODE_OWNERS, user);
     var returnedStatus = codeOwnerDetector.requireFile(workingOrganizations);
     status = returnedStatus != 0 ? returnedStatus : status;
     System.exit(status);

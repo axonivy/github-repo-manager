@@ -40,7 +40,7 @@ jobs:
         run: |
           mvn -B clean compile exec:java \
             -DDRY_RUN="${{ env.dryRun }}" \
-            -DGITHUB.TOKEN.FILE="${{ secrets.TOKEN }}" \
+            -DGITHUB.TOKEN="${{ secrets.TOKEN }}" \
             -Dexec.mainClass="com.axonivy.github.file.GitHubMissingFiles" \
             -Dexec.args="${{ github.actor }}" \
             -DGITHUB.WORKING.ORGANIZATIONS="${{ env.workingOrgs }}"

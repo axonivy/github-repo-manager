@@ -23,7 +23,7 @@ public class GitHubProvider {
   }
 
   public static GitHub getGithubToken() {
-    String token = System.getProperty("GITHUB.TOKEN.FILE");
+    String token = System.getProperty("GITHUB.TOKEN");
     try {
       return new GitHubBuilder().withOAuthToken(token).build();
     } catch (IOException ex) {

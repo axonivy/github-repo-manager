@@ -100,7 +100,7 @@ public class GitHubMissingFilesDetector {
       }
       LOG.info("Repo {0} {1} synced.", repo.getFullName(), reference.meta().filePath());
     } catch (IOException ex) {
-      LOG.error("Cannot add {0} to repo {1}.", repo.getFullName(), reference.meta().filePath());
+      LOG.error("Cannot add {0} to repo {1}.", reference.meta().filePath(), repo.getFullName());
       throw ex;
     }
   }
@@ -108,33 +108,59 @@ public class GitHubMissingFilesDetector {
   private void addMissingFile(GHRepository repo) throws IOException {
     var defaultBranch = repo.getBranch(repo.getDefaultBranch());
     String refURL = createBranchIfMissing(repo, BRANCH_PREFIX + reference.meta().branchName(), defaultBranch.getSHA1());
-
-    repo.createContent()
-        .branch(refURL)
-        .path(reference.meta().filePath())
-        .content(loadReferenceFileContent(repo.getUrl().toString()))
-        .message(reference.meta().commitMessage())
-        .commit();
-    var pr = repo.createPullRequest(reference.meta().pullRequestTitle(), reference.meta().branchName(), repo.getDefaultBranch(), "");
-    if (ghActor != null) {
-      pr.setAssignees(ghActor);
+    try {
+      repo.createContent()
+          .branch(refURL)
+          .path(reference.meta().filePath())
+          .content(loadReferenceFileContent(repo.getUrl().toString()))
+          .message(reference.meta().commitMessage())
+          .commit();
+    } catch (GHFileNotFoundException notFoundException) {
+      LOG.error("Commit new file {0} to repo failed due to lack of permissions", reference.meta().filePath());
+      isNotSync = true;
     }
-    pr.merge(reference.meta().commitMessage());
+    createNewPullRequest(repo, refURL);
   }
 
-  private static String createBranchIfMissing(GHRepository repo, String branchName, String sha) throws IOException {
+  private void createNewPullRequest(GHRepository repo, String refURL) throws IOException {
+    try {
+      var pr = repo.createPullRequest(reference.meta().pullRequestTitle(), refURL, repo.getDefaultBranch(), "");
+      if (ghActor != null) {
+        pr.setAssignees(ghActor);
+      }
+    } catch (HttpException e) {
+      LOG.error("Create new pull request failed: {0}", e.getMessage());
+      isNotSync = true;
+    }
+  }
+
+  private String createBranchIfMissing(GHRepository repo, String branchName, String sha) throws IOException {
+    String createdBranch = branchName;
+    var isBranchExisted = false;
     try {
       var existedRef = repo.getRef(branchName);
       if (existedRef != null && existedRef.getRef().endsWith(branchName)) {
-        return existedRef.getRef();
-      } else {
-        repo.createRef(branchName, sha);
+        createdBranch = existedRef.getRef();
+        isBranchExisted = true;
       }
-    } catch (IOException e) {
-      LOG.error("Create new ref failed, try one more with {0}", branchName);
-      return repo.createRef(branchName, sha).getRef();
+    } catch (Exception exception) {
+      LOG.error("Get branch {0} failed", branchName);
     }
-    return branchName;
+    if (!isBranchExisted) {
+      try {
+        createdBranch = repo.createRef(branchName, sha).getRef();
+      } catch (GHFileNotFoundException notFoundException) {
+        LOG.error("Create new ref {0} failed due to lack of permissions", branchName);
+        isNotSync = true;
+      } catch (HttpException e) {
+        LOG.error("Create new ref {0} failed: {1}", branchName, e.getMessage());
+        isNotSync = true;
+      } catch (Exception e) {
+        LOG.error("Create new ref {0} failed due to an unexpected error occurred: {1}", branchName, e.getMessage());
+        isNotSync = true;
+      }
+    }
+    return createdBranch;
   }
 
   private void handleOtherContent(GHRepository repo) throws IOException {
@@ -160,18 +186,8 @@ public class GitHubMissingFilesDetector {
     repo.getFileContent(reference.meta().filePath(), refURL)
         .update(loadReferenceFileContent(repo.getUrl().toString()),
             reference.meta().commitMessage(),
-            refURL
-        );
-    var pr = repo.createPullRequest(
-        reference.meta().pullRequestTitle(),
-        refURL,
-        repo.getDefaultBranch(),
-        ""
-    );
-    if (ghActor != null) {
-      pr.setAssignees(ghActor);
-      // we open a PR; but auto-merging of it should be avoided
-    }
+            refURL);
+    createNewPullRequest(repo, refURL);
   }
 
   protected byte[] loadReferenceFileContent(String repoURL) throws IOException {

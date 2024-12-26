@@ -8,7 +8,7 @@ public interface GitHubFiles {
       "Add Security.md file to repo");
   FileMeta CODE_OF_CONDUCT = new FileMeta("CODE_OF_CONDUCT.md", "Add code of conduct file",
       "Add_Code_of_Conduct_v2", "Add CODE_OF_CONDUCT.md file to repo");
-  FileMeta CODEOWNERS = new FileMeta(".github/CODEOWNERS", "Add code owner file",
+  FileMeta CODE_OWNERS = new FileMeta(".github/CODEOWNERS", "Add code owner file",
           "Add_CODEOWNERS", "Add CODEOWNERS file to repo");
 
   record FileMeta(String filePath, String pullRequestTitle, String branchName, String commitMessage) {
