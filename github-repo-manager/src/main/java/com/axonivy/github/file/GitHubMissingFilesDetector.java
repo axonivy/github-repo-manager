@@ -82,7 +82,11 @@ public class GitHubMissingFilesDetector {
   }
 
   private boolean hasSimilarContent(GHContent existingFile) throws IOException {
-    Reader targetContent = new CharSequenceReader(new String(loadReferenceFileContent(existingFile.getGitUrl())));
+    var fileContent = loadReferenceFileContent(existingFile.getGitUrl());
+    if (fileContent == null) {
+      return true;
+    }
+    Reader targetContent = new CharSequenceReader(new String(fileContent));
     Reader actualContent;
     try (var inputStream = existingFile.read()) {
       actualContent = new CharSequenceReader(new String(inputStream.readAllBytes()));
@@ -106,13 +110,17 @@ public class GitHubMissingFilesDetector {
   }
 
   private void addMissingFile(GHRepository repo) throws IOException {
+    var fileContent = loadReferenceFileContent(repo.getUrl().toString());
+    if (fileContent == null) {
+      return;
+    }
     var defaultBranch = repo.getBranch(repo.getDefaultBranch());
     String refURL = createBranchIfMissing(repo, BRANCH_PREFIX + reference.meta().branchName(), defaultBranch.getSHA1());
     try {
       repo.createContent()
           .branch(refURL)
           .path(reference.meta().filePath())
-          .content(loadReferenceFileContent(repo.getUrl().toString()))
+          .content(fileContent)
           .message(reference.meta().commitMessage())
           .commit();
     } catch (GHFileNotFoundException notFoundException) {
@@ -181,6 +189,10 @@ public class GitHubMissingFilesDetector {
   }
 
   private void updateFile(GHRepository repo) throws IOException {
+    var fileContent = loadReferenceFileContent(repo.getUrl().toString());
+    if (fileContent == null) {
+      return;
+    }
     var headBranch = repo.getBranch(repo.getDefaultBranch());
     String refURL = createBranchIfMissing(repo, BRANCH_PREFIX + reference.meta().branchName(), headBranch.getSHA1());
     repo.getFileContent(reference.meta().filePath(), refURL)

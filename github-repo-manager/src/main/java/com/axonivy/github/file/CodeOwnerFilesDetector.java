@@ -31,7 +31,7 @@ public class CodeOwnerFilesDetector extends GitHubMissingFilesDetector {
         return String.format(CODE_OWNER_FORMAT, codeOwner.owner).getBytes();
       }
     }
-    return new byte[0];
+    return null;
   }
 
   private List<CodeOwner> getAllCodeOwners() throws IOException {
