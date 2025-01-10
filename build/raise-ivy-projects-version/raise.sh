@@ -26,7 +26,7 @@ source "${DIR}/../raiseRepo.sh"
 
 downloadEngine(){
   if ! [ -d "${workDir}/engine" ]; then
-    wget -P "${workDir}" "${engineUrl}"
+    wget -P "${workDir}" --progress=bar:force:noscroll "${engineUrl}"
     zipped=$(find "${workDir}" -maxdepth 1 -name "*.zip")
     unzip -qq "${zipped}" -d "${workDir}/engine"
     rm "${zipped}"
