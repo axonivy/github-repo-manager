@@ -18,7 +18,6 @@ import com.axonivy.github.file.GitHubFiles.FileMeta;
 
 public class GitHubFilesRemover {
 
-  private static final String GITHUB_ORG = ".github";
   private static final Logger LOG = new Logger();
   private boolean isNotSync;
   private final FileReference reference;
@@ -50,10 +49,7 @@ public class GitHubFilesRemover {
     return 0;
   }
 
-  private void removeRepoFile(GHRepository repo) throws IOException {
-    if (GITHUB_ORG.equals(repo.getName())) {
-      return;
-    }
+  private void removeRepoFile(GHRepository repo) throws IOException {  
     if (repo.isPrivate() || repo.isArchived()) {
       LOG.info("Repo {0} is {1}.", repo.getFullName(), repo.isPrivate() ? "private" : "archived");
       return;

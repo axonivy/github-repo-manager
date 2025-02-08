@@ -18,7 +18,6 @@ import com.axonivy.github.file.GitHubFiles.FileMeta;
 
 public class GitHubMissingFilesDetector {
 
-  private static final String GITHUB_ORG = ".github";
   private static final Logger LOG = new Logger();
   private boolean isNotSync;
   private final FileReference reference;
@@ -51,9 +50,6 @@ public class GitHubMissingFilesDetector {
   }
 
   private void missingFile(GHRepository repo) throws IOException {
-    if (GITHUB_ORG.equals(repo.getName())) {
-      return;
-    }
     if (repo.isFork()) {
       return;
     }
