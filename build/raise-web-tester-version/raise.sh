@@ -49,7 +49,7 @@ function raiseVersionOfOurRepos {
     "git@github.com:axonivy/engine-cockpit"
     "git@github.com:axonivy/dev-workflow-ui"
     "git@github.com:axonivy/project-build-examples"
-    "git@github.com:axonivy-market/demo-projects"
+    "git@github.com:axonivy/demo-projects"
   )
 
   runRepoUpdate 'updateSingleRepo' ${repos[@]}
