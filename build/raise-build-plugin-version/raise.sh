@@ -53,7 +53,7 @@ function raiseVersionOfOurRepos {
   rm -rf ${tmpDirectory}
 
   repos=(
-    "git@github.com:axonivy-market/demo-projects.git"
+    "git@github.com:axonivy/demo-projects.git"
     "git@github.com:axonivy/project-build-examples.git"
     "git@github.com:axonivy/performance-tests.git"
     "git@github.com:axonivy/primefaces-themes.git"

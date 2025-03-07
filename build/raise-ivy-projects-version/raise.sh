@@ -74,7 +74,7 @@ raiseProjects() {
 updateProjectRepos() {
   projectRepos=(
     "git@github.com:axonivy/core.git"
-    "git@github.com:axonivy-market/demo-projects.git"
+    "git@github.com:axonivy/demo-projects.git"
     "git@github.com:axonivy/engine-cockpit.git"
     "git@github.com:axonivy/dev-workflow-ui.git"
     "git@github.com:axonivy/project-build-plugin.git"
