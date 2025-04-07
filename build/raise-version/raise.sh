@@ -60,6 +60,7 @@ function raiseVersionOfOurRepos {
     "git@github.com:axonivy/monaco-yaml-ivy.git"
     "git@github.com:axonivy/swagger-ui-ivy.git"
     "git@github.com:axonivy/core.git"
+    "git@github.com:axonivy/doc.git"
     "git@github.com:axonivy/vscode-extensions.git"
   )
   runRepoUpdate 'updateSingleRepo' ${repos[@]}
