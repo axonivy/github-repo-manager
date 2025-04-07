@@ -37,6 +37,7 @@ public class GitHubRepos {
           "dev-workflow-ui",
           "webeditor",
           "core",
+          "doc",
           "primefaces-themes",
           "process-editor-client",
           "process-editor-core",
