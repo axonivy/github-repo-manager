@@ -138,7 +138,7 @@ function searchReplaceOfOurRepos {
     "git@github.com:axonivy/tls-connection-tester.git"
     "git@github.com:axonivy/ui-components.git"
     "git@github.com:axonivy/update.axonivy.com.git"
-    "git@github.com:axonivy/vscode-extensions.git"
+    "git@github.com:axonivy/vscode-designer.git"
     "git@github.com:axonivy/web-tester.git"
     "git@github.com:axonivy/webeditor.git"
     "git@github.com:axonivy/ws-axis.git"

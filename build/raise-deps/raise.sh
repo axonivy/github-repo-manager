@@ -44,7 +44,7 @@ function raiseDepsOfOurRepos {
     "git@github.com:axonivy/rules.git"
     "git@github.com:axonivy/webeditor.git"
     "git@github.com:axonivy/process-editor-core.git"
-    "git@github.com:axonivy/vscode-extensions.git"
+    "git@github.com:axonivy/vscode-designer.git"
     "git@github.com:axonivy/process-editor-client.git"
     "git@github.com:axonivy/form-editor-client.git"
     "git@github.com:axonivy/config-editor-client.git"

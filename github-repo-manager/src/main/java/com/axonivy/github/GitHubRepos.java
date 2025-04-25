@@ -52,7 +52,7 @@ public class GitHubRepos {
           "swagger-ui-ivy",
           "monaco-yaml-ivy",
           "project-build-examples",
-          "vscode-extensions");
+          "vscode-designer");
 
   public static final List<String> REPOS_TO_TAG = new ArrayList<>();
 
