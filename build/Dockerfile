@@ -8,7 +8,7 @@ RUN addgroup --gid 1000 build && adduser --uid 1000 --gid 1000 --disabled-passwo
     apt install git gettext-base unzip gh ssh -y
 
 ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 20.10.0
+ENV NODE_VERSION 20.19.1
 
 # Install node and npm with nvm
 RUN mkdir $NVM_DIR && \
