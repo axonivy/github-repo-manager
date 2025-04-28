@@ -44,12 +44,14 @@ function raiseDepsOfOurRepos {
     "git@github.com:axonivy/rules.git"
     "git@github.com:axonivy/webeditor.git"
     "git@github.com:axonivy/process-editor-core.git"
-    "git@github.com:axonivy/vscode-designer.git"
-    "git@github.com:axonivy/process-editor-client.git"
-    "git@github.com:axonivy/form-editor-client.git"
-    "git@github.com:axonivy/config-editor-client.git"
+    "git@github.com:axonivy/process-editor.git"
+    "git@github.com:axonivy/form-editor.git"
+    "git@github.com:axonivy/variable-editor.git"
+    "git@github.com:axonivy/dataclass-editor.git"
+    "git@github.com:axonivy/cms-editor.git"
+    "git@github.com:axonivy/runtimelog-view.git"
     "git@github.com:axonivy/neo.git"
-    "git@github.com:axonivy/dataclass-editor-client.git"
+    "git@github.com:axonivy/vscode-designer.git"
   )
   runRepoUpdate 'updateSingleRepo' ${repos[@]}
 }
