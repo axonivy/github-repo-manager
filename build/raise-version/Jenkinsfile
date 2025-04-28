@@ -22,7 +22,7 @@ pipeline {
 
   stages {
     stage('raise-version') {
-      steps {        
+      steps {
         script {
           currentBuild.description = "version: ${params.newVersion} branch: ${params.branch} dryRun: ${params.dryRun}"
           if (!params.dryRun) {
