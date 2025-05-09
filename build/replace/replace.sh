@@ -91,6 +91,7 @@ function searchReplaceOfOurRepos {
     "git@github.com:axonivy/dev-workflow-ui.git"
     "git@github.com:axonivy/dev.axonivy.com.git"
     "git@github.com:axonivy/devcontainer-features.git"
+    "git@github.com:axonivy/devcontainer-templates.git"
     "git@github.com:axonivy/doc-images.git"
     "git@github.com:axonivy/docker-image.git"
     "git@github.com:axonivy/docker-integration-tests.git"
