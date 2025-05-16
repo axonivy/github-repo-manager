@@ -39,20 +39,24 @@ public class GitHubRepos {
           "core",
           "doc",
           "primefaces-themes",
-          "process-editor-client",
+          "process-editor",
           "process-editor-core",
-          "config-editor-client",
-          "form-editor-client",
+          "form-editor",
           "ui-components",
-          "dataclass-editor-client",
           "neo",
           "doc-images",
+          "branding-images",
           "case-map-ui",
           "thirdparty-libs",
           "swagger-ui-ivy",
           "monaco-yaml-ivy",
           "project-build-examples",
-          "vscode-designer");
+          "vscode-designer",
+          "runtimelog-view",
+          "cms-editor",
+          "dataclass-editor",
+          "variable-editor"
+          );
 
   public static final List<String> REPOS_TO_TAG = new ArrayList<>();
 
