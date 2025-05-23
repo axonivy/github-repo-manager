@@ -21,11 +21,6 @@ pipeline {
       description: 'Engine to use for conversion',
       defaultValue: 'https://dev.axonivy.com/permalink/dev/axonivy-engine.zip'
     )
-    string(
-      name: 'ivyVersion',
-      description: 'Ivy version',
-      defaultValue: '9.4.0'
-    )
   }
 
   stages {
@@ -39,7 +34,6 @@ pipeline {
               sshagent(credentials: ['github-axonivy']) {
                 sh """
                   export DRY_RUN=${params.dryRun}
-                  export ivyVersion=${params.ivyVersion}
                   build/raise-ivy-projects-version/raise.sh ${params.engineUrl}
                 """
                 archiveArtifacts 'build/raise-ivy-projects-version/conversion*.txt'
