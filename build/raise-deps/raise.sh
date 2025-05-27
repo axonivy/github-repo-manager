@@ -56,8 +56,22 @@ function raiseDepsOfOurRepos {
   runRepoUpdate 'updateSingleRepo' ${repos[@]}
 }
 
+raiseErrors=""
+
 function updateSingleRepo {
-  .ivy/raise-deps.sh ${newVersion}
+  set +e
+  { # try
+    .ivy/raise-deps.sh ${newVersion}
+  } || { # catch
+    skipReason="raise to version ${newVersion} failed!"
+    raiseErrors+="${repo}: ${skipReason}"
+  }
+  set -e
 }
 
 raiseDepsOfOurRepos
+
+if ! [ -z "${raiseErrors}" ]; then
+  echo "Raising of repos failed on some repos: ${raiseErrors}";
+  exit 127
+fi
