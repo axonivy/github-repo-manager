@@ -38,6 +38,7 @@ public class GitHubRepos {
           "webeditor",
           "core",
           "doc",
+          "demo-projects",
           "primefaces-themes",
           "process-editor",
           "process-editor-core",
