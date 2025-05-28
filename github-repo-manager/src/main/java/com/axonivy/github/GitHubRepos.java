@@ -46,7 +46,6 @@ public class GitHubRepos {
           "ui-components",
           "neo",
           "doc-images",
-          "branding-images",
           "case-map-ui",
           "thirdparty-libs",
           "swagger-ui-ivy",
