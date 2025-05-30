@@ -31,6 +31,7 @@ function runRepoUpdate {
     echo " - ${repo}"
   done
 
+  raiseErrors=""
   reposToPush=()
 
   for repo in "${repos[@]}"; do
@@ -52,7 +53,19 @@ function runRepoUpdate {
     git checkout -q -b "${newBranch}" 
 
     skipReason=""
-    ${updateAction}
+
+    #set +e
+    { # try
+      echo "-----------------> start"
+      ${updateAction}
+      echo "-----------------> done"
+    } || { # catch
+      echo "-----------------> fail"
+      skipReason="raise action failed!"
+      raiseErrors+="${repo}: ${skipReason}"
+    }
+    #set -e
+
     if [[ -n ${skipReason} ]]; then
       echo ""; echo "--> skipping repo '${repo}' because: ${skipReason}";
       continue
@@ -122,4 +135,10 @@ function runRepoUpdate {
     echo ""; echo "--> finished pushing repo '${repo}'";
   done
   cd "${currentDir}"
+
+  if ! [ -z "${raiseErrors}" ]; then
+    echo "Raising of repos failed on some repos: ${raiseErrors}";
+    exit 127
+  fi
+
 }
