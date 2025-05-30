@@ -46,7 +46,7 @@ source "../raiseRepo.sh"
 tmpDirectory=$workDir
 
 function updateSingleRepo {
-  .ivy/raise-build-plugin-version.sh ${releaseVersion} ${snapshotVersion} >> 'maven.log'
+  .ivy/raise-build-plugin-version.sh ${releaseVersion} ${snapshotVersion} 1>/dev/null
 }
 
 function raiseVersionOfOurRepos {
