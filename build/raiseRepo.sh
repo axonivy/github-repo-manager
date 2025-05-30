@@ -54,14 +54,17 @@ function runRepoUpdate {
 
     skipReason=""
 
-    set +e
+    #set +e
     { # try
+      echo "-----------------> start"
       ${updateAction}
+      echo "-----------------> done"
     } || { # catch
+      echo "-----------------> fail"
       skipReason="raise action failed!"
       raiseErrors+="${repo}: ${skipReason}"
     }
-    set -e
+    #set -e
 
     if [[ -n ${skipReason} ]]; then
       echo ""; echo "--> skipping repo '${repo}' because: ${skipReason}";
