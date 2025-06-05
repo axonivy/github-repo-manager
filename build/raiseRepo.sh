@@ -26,7 +26,7 @@ function runRepoUpdate {
   shift
   repos=("$@")
 
-  echo ""; echo "Convert the follwoing "${#repos[@]}" repos:"
+  echo ""; echo "Convert the following "${#repos[@]}" repos:"
   for repo in "${repos[@]}"; do
     echo " - ${repo}"
   done
@@ -87,7 +87,7 @@ function runRepoUpdate {
     return;
   fi
 
-  echo ""; echo "Push the follwoing "${#reposToPush[@]}" repos:"
+  echo ""; echo "Push the following "${#reposToPush[@]}" repos:"
   for repo in "${reposToPush[@]}"; do
     echo " - ${repo}"
   done
