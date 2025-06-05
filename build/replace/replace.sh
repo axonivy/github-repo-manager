@@ -73,7 +73,6 @@ function updateSingleRepo {
 function searchReplaceOfOurRepos {
   repos=(
     "git@github.com:axonivy/demo-projects.git"
-    "git@github.com:axonivy/admin-ui.git"
     "git@github.com:axonivy/birt-project-report.git"
     "git@github.com:axonivy/branding-images.git"
     "git@github.com:axonivy/build-container.git"
