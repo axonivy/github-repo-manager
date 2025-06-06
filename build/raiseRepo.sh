@@ -92,13 +92,7 @@ function runRepoUpdate {
     echo " - ${repo}"
   done
 
-  echo ""
-  if [ -f "${GITHUB_TOKEN_FILE}" ]; then
-    echo "Login github cli with github token in file from variable 'GITHUB_TOKEN_FILE': ${GITHUB_TOKEN_FILE}"
-    gh auth login --with-token < ${GITHUB_TOKEN_FILE}
-  else
-    echo "Do not login to github cli because variable 'GITHUB_TOKEN_FILE' does not contain a valid file path: ${GITHUB_TOKEN_FILE}"
-  fi
+  echo ""; ghAuth
 
   echo "Check github cli auth status with 'gh auth status':"
   gh auth status
@@ -122,4 +116,13 @@ function runRepoUpdate {
     echo ""; echo "--> finished pushing repo '${repo}'";
   done
   cd "${currentDir}"
+}
+
+function ghAuth(){
+  if [ -f "${GITHUB_TOKEN_FILE}" ]; then
+    echo "Login github cli with github token in file from variable 'GITHUB_TOKEN_FILE': ${GITHUB_TOKEN_FILE}"
+    gh auth login --with-token < ${GITHUB_TOKEN_FILE}
+  else
+    echo "Do not login to github cli because variable 'GITHUB_TOKEN_FILE' does not contain a valid file path: ${GITHUB_TOKEN_FILE}"
+  fi
 }
