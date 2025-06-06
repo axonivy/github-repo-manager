@@ -73,9 +73,6 @@ function updateSingleRepo {
 function searchReplaceOfOurRepos {
   repos=(
     "git@github.com:axonivy/demo-projects.git"
-    "git@github.com:axonivy/basic-workflow-ui.git"
-
-    "git@github.com:axonivy/admin-ui.git"
     "git@github.com:axonivy/birt-project-report.git"
     "git@github.com:axonivy/branding-images.git"
     "git@github.com:axonivy/build-container.git"
@@ -134,12 +131,10 @@ function searchReplaceOfOurRepos {
     "git@github.com:axonivy/project-installer.git"
     "git@github.com:axonivy/rules.git"
     "git@github.com:axonivy/runtimelog-view.git"
-    "git@github.com:axonivy/schema.git"
     "git@github.com:axonivy/security-scan.git"
     "git@github.com:axonivy/swagger-ui-ivy.git"
     "git@github.com:axonivy/test-webservices.git"
     "git@github.com:axonivy/thirdparty-libs.git"
-    "git@github.com:axonivy/tls-connection-tester.git"
     "git@github.com:axonivy/ui-components.git"
     "git@github.com:axonivy/update.axonivy.com.git"
     "git@github.com:axonivy/variable-editor.git"
