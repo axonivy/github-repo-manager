@@ -107,7 +107,11 @@ function runRepoUpdate {
     echo "Push branch ${newBranch} to repo ${repo}"
     git push -q -u origin "${newBranch}"
 
-    gh pr create --fill --base ${sourceBranch}
+    prParams=(--fill --base ${sourceBranch})
+    if ! [ -z "${BUILD_USER}" ]; then
+      prParams+=(--assignee "${BUILD_USER}")
+    fi
+    gh pr create ${prParams[@]}
 
     if [ "$autoMerge" = "1" ]; then
       gh pr merge --merge

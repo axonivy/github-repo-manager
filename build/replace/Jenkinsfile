@@ -26,6 +26,9 @@ pipeline {
       }
       steps {        
         script {
+          userId = currentBuild.getBuildCauses()[0].userId
+          echo "BUILD_TRIGGERED_BY: ${userId}"
+
           currentBuild.description = "branch: ${params.sourceBranch} dryRun: ${params.dryRun}"
           sh "git config --global user.name 'ivy-team'"
           sh "git config --global user.email 'info@ivyteam.ch'"
@@ -34,6 +37,7 @@ pipeline {
               sshagent(credentials: ['github-axonivy']) {
                 sh """
                   export DRY_RUN=${params.dryRun}
+                  export BUILD_USER=${userId}
                   build/replace/replace.sh "${params.sedRegexp}" "${params.fileSelector}" "${params.sourceBranch}" "${params.newBranch}" "${params.commitMessage}"
                 """
               }
