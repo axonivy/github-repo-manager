@@ -65,7 +65,7 @@ function runRepoUpdate {
 
     if [ "$DRY_RUN" != false ]; then
       echo ""; echo "DRY RUN: Changes were simulated however, in the following files:"
-      git --no-pager status -s
+      showDiff
     fi
 
     echo "git: commit with message: ${commitMessage}";
@@ -120,6 +120,14 @@ function runRepoUpdate {
     echo ""; echo "--> finished pushing repo '${repo}'";
   done
   cd "${currentDir}"
+}
+
+function showDiff(){
+  git --no-pager status -s | sed 's/.* //g' | while
+  read file; do
+    git --no-pager diff HEAD "$file"
+    echo "..."
+  done
 }
 
 function ghAuth(){
