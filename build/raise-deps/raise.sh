@@ -52,6 +52,7 @@ function raiseDepsOfOurRepos {
     "git@github.com:axonivy/runtimelog-view.git"
     "git@github.com:axonivy/neo.git"
     "git@github.com:axonivy/vscode-designer.git"
+    "git@github.com:axonivy/dev-workflow-ui.git"
   )
   runRepoUpdate 'updateSingleRepo' ${repos[@]}
 }
