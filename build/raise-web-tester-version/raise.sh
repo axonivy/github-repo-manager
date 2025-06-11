@@ -38,7 +38,11 @@ source "../raiseRepo.sh"
 tmpDirectory=$workDir
 
 function updateSingleRepo {
-  .ivy/raise-web-tester.sh ${releaseVersion} ${snapshotVersion} >> 'maven.log'
+  if test -f .ivy/raise-web-tester.sh; then
+    .ivy/raise-web-tester.sh ${releaseVersion} ${snapshotVersion} >> 'maven.log'
+  else
+    skipReason="No raise-web-tester.sh present"
+  fi
 }
 
 function raiseVersionOfOurRepos {
