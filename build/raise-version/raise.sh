@@ -62,6 +62,7 @@ function raiseVersionOfOurRepos {
     "git@github.com:axonivy/vscode-designer.git"
     "git@github.com:axonivy/monaco-yaml-ivy.git"
     "git@github.com:axonivy/swagger-ui-ivy.git"
+    "git@github.com:axonivy/thirdparty-libs.git"
     "git@github.com:axonivy/core.git"
     "git@github.com:axonivy/doc.git"
   )
@@ -69,7 +70,11 @@ function raiseVersionOfOurRepos {
 }
 
 function updateSingleRepo {
-  .ivy/raise-version.sh ${newVersion}
+  if test -f .ivy/raise-version.sh; then
+    .ivy/raise-version.sh ${newVersion}
+  else
+    skipReason="No raise-version.sh present"
+  fi
 }
 
 raiseVersionOfOurRepos
