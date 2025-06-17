@@ -70,12 +70,4 @@ function updateSingleRepo {
   set -e
 }
 
-function searchReplaceOfOurRepos {
-  ghAuth
-  json=$(gh repo list axonivy --no-archived --source --json sshUrl --limit 400)
-  gitUris=$(echo $json | grep -o "git[^\"]*\.git" | tr "\n" " ")
-  repos=($gitUris)
-  runRepoUpdate 'updateSingleRepo' ${repos[@]}
-}
-
-searchReplaceOfOurRepos
+runAllRepoUpdate 'updateSingleRepo'

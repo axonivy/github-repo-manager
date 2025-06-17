@@ -50,7 +50,7 @@ function updateSingleRepo {
     }
     set -e
   else
-    skipReason="No raise-web-tester.sh present"
+    skipReason="No raise-deps.sh present"
   fi
 }
 
