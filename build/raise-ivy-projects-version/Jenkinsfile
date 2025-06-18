@@ -21,12 +21,14 @@ pipeline {
       description: 'Engine to use for conversion',
       defaultValue: 'https://dev.axonivy.com/permalink/dev/axonivy-engine.zip'
     )
+    string(name: 'branch', defaultValue: 'master', description: 'The branch to apply this change on e.g. master, release/11.1, release/10.0')
   }
 
   stages {
     stage('raise-ivy-project-version') {
       steps {
         script {
+          currentBuild.description = "branch: ${params.branch}"
           sh "git config --global user.name 'ivy-team'"
           sh "git config --global user.email 'info@ivyteam.ch'"
           withEnv(['GIT_SSH_COMMAND=ssh -o StrictHostKeyChecking=no -o LogLevel=error']) {
@@ -34,7 +36,7 @@ pipeline {
               sshagent(credentials: ['github-axonivy']) {
                 sh """
                   export DRY_RUN=${params.dryRun}
-                  build/raise-ivy-projects-version/raise.sh ${params.engineUrl}
+                  build/raise-ivy-projects-version/raise.sh ${params.engineUrl} ${params.branch}
                 """
                 archiveArtifacts 'build/raise-ivy-projects-version/conversion*.txt'
               }
