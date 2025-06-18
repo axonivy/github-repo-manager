@@ -7,6 +7,10 @@ engineUrl=https://dev.axonivy.com/permalink/dev/axonivy-engine.zip
 if [ ! -z "$1" ]; then
   engineUrl=$1
 fi
+if [ $# -eq 1 ]; then
+  echo "Parameter source branch required"
+  exit
+fi
 
 # do not convert these projects:
 declare -A exclusions=( 
@@ -15,7 +19,9 @@ declare -A exclusions=(
 
 workDir=$(mktemp -d -t projectConvertXXX)
 
-sourceBranch='master'
+sourceBranch=$2
+echo "source branch to checkout repos $2"
+
 uuid=$(date +%s%N)
 newBranch="raise-ivy-project-version-${uuid}"
 
