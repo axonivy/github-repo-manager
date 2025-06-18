@@ -122,6 +122,14 @@ function runRepoUpdate {
   cd "${currentDir}"
 }
 
+function runAllRepoUpdate {
+  ghAuth
+  json=$(gh repo list axonivy --no-archived --source --json sshUrl --limit 400)
+  gitUris=$(echo $json | grep -o "git[^\"]*\.git" | tr "\n" " ")
+  repos=($gitUris)
+  runRepoUpdate ${1} ${repos[@]}
+}
+
 function showDiff(){
   git --no-pager status -s | sed 's/.* //g' | while
   read file; do

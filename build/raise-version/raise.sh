@@ -40,35 +40,6 @@ cd "$(dirname "$0")"
 
 source "../raiseRepo.sh"
 
-function raiseVersionOfOurRepos {
-  repos=(
-    "git@github.com:axonivy/demo-projects.git"
-    "git@github.com:axonivy/doc-images.git"
-    "git@github.com:axonivy/case-map-ui.git"
-    "git@github.com:axonivy/primefaces-themes.git"
-    "git@github.com:axonivy/engine-cockpit.git"
-    "git@github.com:axonivy/dev-workflow-ui.git"
-    "git@github.com:axonivy/webeditor.git"
-    "git@github.com:axonivy/rules.git"
-    "git@github.com:axonivy/process-editor-core.git"
-    "git@github.com:axonivy/ui-components.git"
-    "git@github.com:axonivy/process-editor.git"
-    "git@github.com:axonivy/variable-editor.git"
-    "git@github.com:axonivy/form-editor.git"
-    "git@github.com:axonivy/dataclass-editor.git"
-    "git@github.com:axonivy/cms-editor.git"
-    "git@github.com:axonivy/runtimelog-view.git"
-    "git@github.com:axonivy/neo.git"
-    "git@github.com:axonivy/vscode-designer.git"
-    "git@github.com:axonivy/monaco-yaml-ivy.git"
-    "git@github.com:axonivy/swagger-ui-ivy.git"
-    "git@github.com:axonivy/thirdparty-libs.git"
-    "git@github.com:axonivy/core.git"
-    "git@github.com:axonivy/doc.git"
-  )
-  runRepoUpdate 'updateSingleRepo' ${repos[@]}
-}
-
 function updateSingleRepo {
   if test -f .ivy/raise-version.sh; then
     .ivy/raise-version.sh ${newVersion}
@@ -77,4 +48,4 @@ function updateSingleRepo {
   fi
 }
 
-raiseVersionOfOurRepos
+runAllRepoUpdate 'updateSingleRepo'

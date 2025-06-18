@@ -72,25 +72,7 @@ raiseProjects() {
 }
 
 updateProjectRepos() {
-  projectRepos=(
-    "git@github.com:axonivy/core.git"
-    "git@github.com:axonivy/demo-projects.git"
-    "git@github.com:axonivy/engine-cockpit.git"
-    "git@github.com:axonivy/dev-workflow-ui.git"
-    "git@github.com:axonivy/project-build-plugin.git"
-    "git@github.com:axonivy/project-build-examples.git"
-    "git@github.com:axonivy/web-tester.git"
-    "git@github.com:axonivy/cluster-tests.git"
-    "git@github.com:axonivy/process-editor.git"
-    "git@github.com:axonivy/variable-editor.git"
-    "git@github.com:axonivy/dataclass-editor.git"
-    "git@github.com:axonivy/form-editor.git"
-    "git@github.com:axonivy/cms-editor.git"
-    "git@github.com:axonivy/runtimelog-view.git"
-    "git@github.com:axonivy/neo.git"
-    "git@github.com:axonivy/vscode-designer.git"
-  )
-  runRepoUpdate 'raiseProjects' "${projectRepos[@]}"
+  runAllRepoUpdate 'raiseProjects'
 }
 
 withLog() { # log to file and stdout (treasure logs in order to review/archive them)
