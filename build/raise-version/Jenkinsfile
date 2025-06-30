@@ -43,5 +43,21 @@ pipeline {
         }
       }
     }
+    stage('Trigger Builds') {
+      steps {
+        build("core_p2")
+        build("core_openapi")
+        build("core_java-api")
+        build("core_json-schema")
+      }
+    }
+  }
+}
+
+def build(String jobName) {
+  try {
+    build job: "${jobName}/${params.branch}", wait: false, propagate: false
+  } catch (hudson.AbortException ex) {
+    echo "Job ${jobName} not found on branch ${params.branch}"
   }
 }
