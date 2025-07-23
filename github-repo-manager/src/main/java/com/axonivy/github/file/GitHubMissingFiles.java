@@ -11,7 +11,7 @@ import com.axonivy.github.file.GitHubFiles.FileMeta;
 
 public class GitHubMissingFiles {
 
-  private static final List<String> WORKING_ORGANIZATIONS = List.of("axonivy");
+  private static final List<String> WORKING_ORGANIZATIONS = List.of("axonivy-market");
   private static final List<FileMeta> REQUIRED_FILES = List.of(LICENSE, SECURITY, CODE_OF_CONDUCT);
   private static final List<FileMeta> REMOVE_FILES = List.of();
 
