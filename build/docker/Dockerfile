@@ -7,15 +7,15 @@ RUN addgroup --gid 1000 build && adduser --uid 1000 --gid 1000 --disabled-passwo
     apt update && \
     apt install git gettext-base unzip gh ssh -y
 
-ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 20.19.1
+ENV NVM_DIR=/usr/local/nvm
+ENV NODE_VERSION=22.18.0
 
 # Install node and npm with nvm
 RUN mkdir $NVM_DIR && \
-    curl https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash && \
+    curl https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash && \
     . $NVM_DIR/nvm.sh && \
     nvm install $NODE_VERSION && \
-    npm install -g yarn
+    npm install -g yarn pnpm
 
-ENV NODE_PATH $NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
-ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+ENV NODE_PATH=$NVM_DIR/versions/node/v$NODE_VERSION/lib/node_modules
+ENV PATH=$NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
