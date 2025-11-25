@@ -14,9 +14,8 @@ fi
 
 # do not convert these projects:
 declare -A exclusions=( 
-  ["core.git"]="doc/screenshots/designer/screenshots/additionalProjects/oldVersionProject" 
-  ["performance-tests.git"]=("testProjects/10.0.0/Performance" "testProjects/12.0.0/Performance" "testProjects/13.1.0/Performance")
-  ["migration-test-projects.git"]="migrate-me" 
+  ["core.git"]="doc/screenshots/designer/screenshots/additionalProjects/oldVersionProject"
+  ["migration-test-projects.git"]="migrate-me"
 )
 
 workDir=$(mktemp -d -t projectConvertXXX)
