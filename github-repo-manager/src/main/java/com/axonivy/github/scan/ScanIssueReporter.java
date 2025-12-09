@@ -60,7 +60,7 @@ public class ScanIssueReporter {
       printHtml("<tbody>");
       for (var issue : sortedIssues) {
         printHtml("<tr>");
-        printHtml("<td><a target=\"_blank\" href=\"https://1ivy.atlassian.net/browse/" + issue + "\">" + issue + "</a></td>");
+        printHtml("<td><a target=\"_blank\" href=\"https://axon-ivy.atlassian.net/browse/" + issue + "\">" + issue + "</a></td>");
         printContains("Log", logIssues, issue);
         printContains("Release Notes", rnIssues, issue);
         printHtml("</tr>");
