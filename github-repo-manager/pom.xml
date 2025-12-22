@@ -66,6 +66,7 @@
                 </goals>
                 <configuration>
                   <jiraServerId>axonivy.jira</jiraServerId>
+                  <jiraServerUri>https://axon-ivy.atlassian.net</jiraServerUri>
                   <filterBy>project in (XIVY) AND fixVersion = ${ivy-version}</filterBy>
                   <asciiTemplate>$${key}</asciiTemplate>
                   <fileset>
