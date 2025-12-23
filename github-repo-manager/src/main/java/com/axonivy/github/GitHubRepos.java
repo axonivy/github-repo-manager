@@ -55,7 +55,8 @@ public class GitHubRepos {
           "runtimelog-view",
           "cms-editor",
           "dataclass-editor",
-          "variable-editor"
+          "variable-editor",
+          "database-editor"
           );
 
   public static final List<String> REPOS_TO_TAG = new ArrayList<>();
