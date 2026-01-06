@@ -56,7 +56,8 @@ public class GitHubRepos {
           "cms-editor",
           "dataclass-editor",
           "variable-editor",
-          "database-editor"
+          "database-editor",
+          "role-editor"
           );
 
   public static final List<String> REPOS_TO_TAG = new ArrayList<>();
