@@ -6,42 +6,19 @@ import java.util.List;
 public class GitHubRepos {
 
   public static List<String> repos(String version) {
-    if (version.startsWith("7")) {
-      return REPOS7;
-    } else if (version.startsWith("8")) {
-      return REPOS8;
-    }
     return REPOS;
   }
 
-  public static final List<String> REPOS7 = List.of("core-7", "ulc-ria", "admin-ui", "rules", "maven-plugins", "webeditor");
-
-  public static final  List<String> REPOS8 = List.of(
-          "rules",
-          "engine-cockpit",
-          "maven-plugins",
-          "webeditor",
-          "core",
-          "primefaces-themes",
-          "ws-axis",
-          "case-map-ui",
-          "thirdparty-libs",
-          "p2-targetplatform",
-          "doc-images",
-          "engine-launchers",
-          "core-icons");
 
   public static final List<String> REPOS_TO_BRANCH = List.of(
           "rules",
           "engine-cockpit",
           "dev-workflow-ui",
-          "webeditor",
           "core",
           "doc",
           "demo-projects",
           "primefaces-themes",
           "process-editor",
-          "process-editor-core",
           "form-editor",
           "ui-components",
           "neo",
