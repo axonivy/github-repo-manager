@@ -1,8 +1,6 @@
 package com.axonivy.github;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.kohsuke.github.GHRepository;
 
@@ -20,17 +18,7 @@ public class GitHubRepoTagger {
     System.out.println("branch: " + branch);
     System.out.println("tag: " + tag);
     try {
-      List<String> repos = new ArrayList<String>();
-
-      if ("release/7.0".equals(branch)) {
-        repos = GitHubRepos.REPOS7;
-      } else if ("release/8.0".equals(branch)) {
-        repos = GitHubRepos.REPOS8;
-      } else {
-        repos = GitHubRepos.REPOS_TO_TAG;
-      }
-
-      for (var repo : repos) {
+      for (var repo : GitHubRepos.REPOS_TO_TAG) {
         var r = github.getRepository("axonivy/" + repo);
         new Tagger(r, dryRun, branch, tag).run();
       }
