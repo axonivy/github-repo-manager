@@ -13,8 +13,7 @@ if [ $# -eq 1 ]; then
 fi
 
 # do not convert these projects:
-declare -A exclusions=( 
-  ["core.git"]="doc/screenshots/designer/screenshots/additionalProjects/oldVersionProject"
+declare -A exclusions=(   
   ["migration-test-projects.git"]="migrate-me"
 )
 
@@ -55,9 +54,9 @@ raiseProjects() {
   echo "Searching projects in ${gitDir}: excluding ${exclude}"
   projects=()
   for ivyPref in `find ${gitDir} -name ".ivyproject"`; do
-    project=$(dirname $(dirname $ivyPref))
+    project=$(dirname $ivyPref)
     if ! [ -f "${project}/pom.xml" ]; then
-      continue # prefs file not in natural project structure
+      continue # project file not in natural project structure
     fi
     if [[ $project == *"/work/"* ]]; then
       continue # temporary workspace artifact
