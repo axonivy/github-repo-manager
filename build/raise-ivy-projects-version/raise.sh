@@ -54,7 +54,7 @@ raiseProjects() {
   exclude="${exclusions[${gitName}]}"
   echo "Searching projects in ${gitDir}: excluding ${exclude}"
   projects=()
-  for ivyPref in `find ${gitDir} -name "ch.ivyteam.ivy.designer.prefs"`; do
+  for ivyPref in `find ${gitDir} -name ".ivyproject"`; do
     project=$(dirname $(dirname $ivyPref))
     if ! [ -f "${project}/pom.xml" ]; then
       continue # prefs file not in natural project structure
