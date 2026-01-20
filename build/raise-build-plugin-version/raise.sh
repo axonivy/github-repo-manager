@@ -47,7 +47,7 @@ tmpDirectory=$workDir
 
 function updateSingleRepo {
   if test -f .ivy/raise-build-plugin-version.sh; then
-    .ivy/raise-build-plugin-version.sh ${releaseVersion} ${snapshotVersion} 1>/dev/null
+    .ivy/raise-build-plugin-version.sh ${releaseVersion} ${snapshotVersion}
   else
     skipReason="No raise-build-plugin-version.sh present"
   fi
