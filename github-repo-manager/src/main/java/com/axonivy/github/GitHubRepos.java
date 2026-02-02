@@ -24,6 +24,7 @@ public class GitHubRepos {
           "neo",
           "doc-images",
           "case-map-ui",
+          "case-map-editor",
           "thirdparty-libs",
           "swagger-ui-ivy",
           "monaco-yaml-ivy",
@@ -34,7 +35,8 @@ public class GitHubRepos {
           "dataclass-editor",
           "variable-editor",
           "database-editor",
-          "role-editor"
+          "role-editor",
+          "user-editor"
           );
 
   public static final List<String> REPOS_TO_TAG = new ArrayList<>();
