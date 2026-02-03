@@ -36,7 +36,8 @@ public class GitHubRepos {
           "variable-editor",
           "database-editor",
           "role-editor",
-          "user-editor"
+          "user-editor",
+          "restclient-editor"
           );
 
   public static final List<String> REPOS_TO_TAG = new ArrayList<>();
