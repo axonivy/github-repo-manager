@@ -20,7 +20,7 @@
       <plugin>
         <groupId>ch.ivyteam.maven</groupId>
         <artifactId>jira-plugin</artifactId>
-        <version>10.0.5</version>
+        <version>13.2.0</version>
         <executions>
           <execution>
             <id>create-new-version-in-jira</id>
@@ -31,6 +31,7 @@
             <configuration>
               <jiraServerId>axonivy.jira</jiraServerId>
               <!-- we can not detemine automatically which was the version before -->
+              <jiraServerUri>https://axon-ivy.atlassian.net</jiraServerUri>
               <afterVersion>skip-after-version</afterVersion>
               <newVersion>${newJiraVersion}</newVersion>
             </configuration>
