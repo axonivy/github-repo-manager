@@ -37,6 +37,7 @@ public class GitHubRepos {
           "database-editor",
           "role-editor",
           "user-editor",
+          "persistence-editor",
           "restclient-editor"
           );
 
