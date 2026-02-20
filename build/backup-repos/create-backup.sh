@@ -68,6 +68,7 @@ function backup_escrow()
   cloneRepository $gitHubAxonIvyRepo 'user-editor'
   cloneRepository $gitHubAxonIvyRepo 'persistence-editor'
   cloneRepository $gitHubAxonIvyRepo 'restclient-editor'
+  cloneRepository $gitHubAxonIvyRepo 'webservice-editor'
   cloneRepository $gitHubAxonIvyRepo 'cms-editor'
   cloneRepository $gitHubAxonIvyRepo 'runtimelog-view'
   cloneRepository $gitHubAxonIvyRepo 'ui-components'

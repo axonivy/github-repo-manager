@@ -38,7 +38,8 @@ public class GitHubRepos {
           "role-editor",
           "user-editor",
           "persistence-editor",
-          "restclient-editor"
+          "restclient-editor",
+          "webservice-editor"
           );
 
   public static final List<String> REPOS_TO_TAG = new ArrayList<>();
