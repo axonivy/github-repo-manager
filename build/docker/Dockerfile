@@ -1,4 +1,4 @@
-FROM maven:3.9.12-eclipse-temurin-25
+FROM maven:3.9.13-eclipse-temurin-25
 
 RUN apt update && \
     apt install curl git gettext-base unzip gh ssh wget -y && \
