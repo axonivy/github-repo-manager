@@ -19,61 +19,200 @@ if [ -z "$newBranch" ]; then
   uuid=$(date +%s%N)
   newBranch="${sourceBranch}-${uuid}"
 fi
+if [[ ! "${PARALLEL_JOBS}" =~ ^[1-9][0-9]*$ ]]; then
+  PARALLEL_JOBS=6
+fi
+
+function repoCloneDir {
+  echo "${workDir}/$1" | sed 's|:|-|g'
+}
+
+function repoResultDir {
+  echo "${workDir}/.raiseRepo-results/$1"
+}
+
+function printRepoLog {
+  logFile="$1/log.txt"
+  if [ -f "${logFile}" ]; then
+    cat "${logFile}"
+  fi
+}
+
+function recordRepoResult {
+  resultDir="$1"
+  status="$2"
+  message="$3"
+
+  echo "${status}" > "${resultDir}/status"
+  printf '%s' "${message}" > "${resultDir}/message"
+}
+
+function readRepoResultMessage {
+  resultDir="$1"
+
+  if [ -f "${resultDir}/message" ]; then
+    cat "${resultDir}/message"
+  fi
+}
+
+function processRepoUpdate {
+  updateAction=$1
+  repo=$2
+  resultDir=$3
+  cloneDir=$(repoCloneDir "${repo}")
+  logFile="${resultDir}/log.txt"
+
+  mkdir -p "${resultDir}"
+
+  (
+    exec > "${logFile}" 2>&1
+    set +e
+
+    echo ""
+    echo "==> start converting repo '${repo}'"
+    echo ""
+
+    branchExists=$(git ls-remote --heads ${repo} refs/heads/${sourceBranch})
+    if [[ -z ${branchExists} ]]; then
+      echo ""
+      echo "--> skipping repo '${repo}' because it has no '${sourceBranch}' branch"
+      recordRepoResult "${resultDir}" "skipped" "missing source branch"
+      exit 0
+    fi
+
+    echo "git: clone branch '${sourceBranch}' of repo '${repo}' to '${cloneDir}'"
+    git clone -b ${sourceBranch} -q "${repo}" "${cloneDir}"
+    if [ $? -ne 0 ]; then
+      echo "git: clone failed for repo '${repo}'"
+      recordRepoResult "${resultDir}" "failed" "git clone failed"
+      exit 1
+    fi
+
+    cd "${cloneDir}"
+    if [ $? -ne 0 ]; then
+      echo "git: failed to switch into clone dir '${cloneDir}'"
+      recordRepoResult "${resultDir}" "failed" "failed to enter clone dir"
+      exit 1
+    fi
+
+    echo "git: create new branch '${newBranch}'"
+    git checkout -q -b "${newBranch}"
+    if [ $? -ne 0 ]; then
+      echo "git: failed to create new branch '${newBranch}'"
+      recordRepoResult "${resultDir}" "failed" "git checkout failed"
+      exit 1
+    fi
+
+    skipReason=""
+    ${updateAction}
+    updateExit=$?
+    if [ ${updateExit} -ne 0 ]; then
+      if [[ -z ${skipReason} ]]; then
+        skipReason="${updateAction} failed"
+      fi
+      echo ""
+      echo "--> failed converting repo '${repo}' because: ${skipReason}"
+      recordRepoResult "${resultDir}" "failed" "${skipReason}"
+      exit ${updateExit}
+    fi
+    if [[ -n ${skipReason} ]]; then
+      echo ""
+      echo "--> skipping repo '${repo}' because: ${skipReason}"
+      recordRepoResult "${resultDir}" "skipped" "${skipReason}"
+      exit 0
+    fi
+
+    if [[ -z $(git status --porcelain) ]]; then
+      echo ""
+      echo "--> skipping repo '${repo}' because: Nothing has changed"
+      recordRepoResult "${resultDir}" "skipped" "Nothing has changed"
+      exit 0
+    fi
+
+    if [ "$DRY_RUN" != false ]; then
+      echo ""
+      echo "DRY RUN: Changes were simulated however, in the following files:"
+      showDiff
+    fi
+
+    echo "git: commit with message: ${commitMessage}"
+    git commit -a -m "${commitMessage}"
+    if [ $? -ne 0 ]; then
+      echo "git: commit failed for repo '${repo}'"
+      recordRepoResult "${resultDir}" "failed" "git commit failed"
+      exit 1
+    fi
+
+    echo ""
+    echo "--> finished converting repo '${repo}'"
+    recordRepoResult "${resultDir}" "changed" "${cloneDir}"
+  )
+}
+
+function waitForRepoSlot {
+  maxJobs=$1
+
+  while [ "$(jobs -rp | wc -l | tr -d ' ')" -ge "${maxJobs}" ]; do
+    sleep 1
+  done
+}
 
 function runRepoUpdate {
   currentDir=$(pwd)
   updateAction=$1
   shift
   repos=("$@")
+  resultsRoot="${workDir}/.raiseRepo-results"
 
   echo ""; echo "Convert the following "${#repos[@]}" repos:"
   for repo in "${repos[@]}"; do
     echo " - ${repo}"
   done
 
+  rm -rf "${resultsRoot}"
+  mkdir -p "${resultsRoot}"
+
   reposToPush=()
+  workerPids=()
+  raiseRepoErrors=""
 
-  for repo in "${repos[@]}"; do
-     echo ""; echo "==> start converting repo '${repo}'"; echo ""
-    
-    branchExists=$(git ls-remote --heads ${repo} refs/heads/${sourceBranch})
-    if [[ -z ${branchExists} ]]; then
-      echo ""; echo "--> skipping repo '${repo}' because it has no '${sourceBranch}' branch";
-      continue
-    fi
+  for repoIndex in "${!repos[@]}"; do
+    repo="${repos[${repoIndex}]}"
+    resultDir=$(repoResultDir "${repoIndex}")
 
-    cloneDir=$(echo "${workDir}/${repo}" | sed 's|:|-|g')
-    echo "git: clone branch '${sourceBranch}' of repo '${repo}' to '${cloneDir}'"
-    git clone -b ${sourceBranch} -q "${repo}" "${cloneDir}"
-
-    cd "${cloneDir}"
-
-    echo "git: create new branch '${newBranch}'"
-    git checkout -q -b "${newBranch}" 
-
-    skipReason=""
-    ${updateAction}
-    if [[ -n ${skipReason} ]]; then
-      echo ""; echo "--> skipping repo '${repo}' because: ${skipReason}";
-      continue
-    fi
-
-    if [[ -z $(git status --porcelain) ]]; then
-      echo ""; echo "--> skipping repo '${repo}' because: Nothing has changed";
-      continue
-    fi
-
-    if [ "$DRY_RUN" != false ]; then
-      echo ""; echo "DRY RUN: Changes were simulated however, in the following files:"
-      showDiff
-    fi
-
-    echo "git: commit with message: ${commitMessage}";
-    git commit -a -m "${commitMessage}"
-
-    reposToPush+=(${repo})
-    echo ""; echo "--> finished converting repo '${repo}'";
+    waitForRepoSlot "${PARALLEL_JOBS}"
+    processRepoUpdate "${updateAction}" "${repo}" "${resultDir}" &
+    workerPids+=("$!")
   done
+
+  for workerPid in "${workerPids[@]}"; do
+    if ! wait "${workerPid}"; then
+      true
+    fi
+  done
+
+  for repoIndex in "${!repos[@]}"; do
+    repo="${repos[${repoIndex}]}"
+    resultDir=$(repoResultDir "${repoIndex}")
+    status=$(cat "${resultDir}/status")
+
+    printRepoLog "${resultDir}"
+
+    if [ "${status}" = "changed" ]; then
+      reposToPush+=("${repo}")
+    fi
+
+    if [ "${status}" = "failed" ]; then
+      errorMessage=$(readRepoResultMessage "${resultDir}")
+      raiseRepoErrors+="${repo}: ${errorMessage}\n"
+    fi
+  done
+
+  if ! [ -z "${raiseRepoErrors}" ]; then
+    printf '\nFailed to update some repos:\n%b' "${raiseRepoErrors}"
+    cd "${currentDir}"
+    return 127
+  fi
 
   if [ "$DRY_RUN" != false ]; then
     echo ""; echo "Because this is a DRY RUN we are finished here and do NOT push!"
@@ -101,7 +240,7 @@ function runRepoUpdate {
   for repo in "${reposToPush[@]}"; do
     echo ""; echo "==> start pushing repo '${repo}'"; echo ""
 
-    cloneDir=$(echo "${workDir}/${repo}" | sed 's|:|-|g')
+    cloneDir=$(repoCloneDir "${repo}")
     cd "${cloneDir}"
 
     echo "Push branch ${newBranch} to repo ${repo}"

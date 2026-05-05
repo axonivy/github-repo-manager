@@ -37,8 +37,6 @@ cd "$(dirname "$0")"
 
 source "../raiseRepo.sh"
 
-raiseErrors=""
-
 function updateSingleRepo {
   if test -f .ivy/raise-deps.sh; then
     set +e
@@ -46,7 +44,8 @@ function updateSingleRepo {
       .ivy/raise-deps.sh ${newVersion}
     } || { # catch
       skipReason="raise to version ${newVersion} failed!"
-      raiseErrors+="${repo}: ${skipReason}"
+      set -e
+      return 1
     }
     set -e
   else
@@ -55,8 +54,3 @@ function updateSingleRepo {
 }
 
 runAllRepoUpdate 'updateSingleRepo'
-
-if ! [ -z "${raiseErrors}" ]; then
-  echo "Raising of repos failed on some repos: ${raiseErrors}";
-  exit 127
-fi
