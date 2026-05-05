@@ -157,6 +157,30 @@ function waitForRepoSlot {
   done
 }
 
+function countFinishedRepoWorkers {
+  finished=0
+
+  for repoIndex in "${!repos[@]}"; do
+    resultDir=$(repoResultDir "${repoIndex}")
+    if [ -f "${resultDir}/status" ]; then
+      finished=$((finished + 1))
+    fi
+  done
+
+  echo "${finished}"
+}
+
+function printRepoProgress {
+  finishedWorkers=$(countFinishedRepoWorkers)
+  runningWorkers=$(jobs -rp | wc -l | tr -d ' ')
+
+  if [ "${finishedWorkers}" != "${lastFinishedWorkers}" ] || [ "${runningWorkers}" != "${lastRunningWorkers}" ]; then
+    echo "Progress: ${finishedWorkers}/${#repos[@]} repos finished, ${runningWorkers} running"
+    lastFinishedWorkers="${finishedWorkers}"
+    lastRunningWorkers="${runningWorkers}"
+  fi
+}
+
 function runRepoUpdate {
   currentDir=$(pwd)
   updateAction=$1
@@ -175,14 +199,35 @@ function runRepoUpdate {
   reposToPush=()
   workerPids=()
   raiseRepoErrors=""
+  lastFinishedWorkers=-1
+  lastRunningWorkers=-1
+
+  echo ""
+  echo "Processing repos with up to ${PARALLEL_JOBS} parallel workers..."
+  printRepoProgress
 
   for repoIndex in "${!repos[@]}"; do
     repo="${repos[${repoIndex}]}"
     resultDir=$(repoResultDir "${repoIndex}")
 
-    waitForRepoSlot "${PARALLEL_JOBS}"
+    while [ "$(jobs -rp | wc -l | tr -d ' ')" -ge "${PARALLEL_JOBS}" ]; do
+      printRepoProgress
+      sleep 1
+    done
+
     processRepoUpdate "${updateAction}" "${repo}" "${resultDir}" &
     workerPids+=("$!")
+    printRepoProgress
+  done
+
+  while true; do
+    printRepoProgress
+
+    if [ "${lastFinishedWorkers}" -ge "${#repos[@]}" ]; then
+      break
+    fi
+
+    sleep 1
   done
 
   for workerPid in "${workerPids[@]}"; do
