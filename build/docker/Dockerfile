@@ -1,7 +1,7 @@
 FROM maven:3.9.16-eclipse-temurin-25
 
 RUN apt update && \
-    apt install curl git gettext-base unzip gh ssh wget -y && \
+    apt install curl git gettext-base unzip gh ssh wget rsync -y && \
     rm -rf /var/lib/apt/lists/* && \
     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
     chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
