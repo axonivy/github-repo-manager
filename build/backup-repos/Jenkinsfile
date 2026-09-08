@@ -14,16 +14,38 @@ pipeline {
   }
 
   stages {
-    stage('raise-version') {
-      steps {        
+    stage('backup:axonivy') {
+      steps {
         script {
-          withEnv(['GIT_SSH_COMMAND=ssh -o StrictHostKeyChecking=no']) {
-            sshagent(credentials: ['github-axonivy']) {
-              sh "build/backup-repos/create-backup.sh ./"
-            }
+          mirrorOrg('axonivy')
+        }
+      }
+    }
+    stage('backup:axonivy-market') {
+      steps {
+        script {
+          mirrorOrg('axonivy-market')
+        }
+      }
+    }
+    stage('store:nas') {
+      steps {
+        script {
+          sshagent(credentials: ['zugprojenkins-ssh']) {
+            sh 'rsync -r -e "ssh -o StrictHostKeyChecking=no" build/backup-repos/target/backup/ ubuntu@nas.ivyteam.io:/data/archive/github/'
           }
         }
       }
     }
+  }
+}
+
+def mirrorOrg(String org) {
+  withCredentials([file(credentialsId: 'github-ivyteam-token-repo-manager', variable: 'GITHUB_TOKEN_FILE')]) {
+    sh """
+      gh auth login --with-token < ${GITHUB_TOKEN_FILE}
+      gh auth setup-git
+    """
+    sh "build/backup-repos/backup-org.sh ${org}"
   }
 }
