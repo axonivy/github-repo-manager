@@ -20,7 +20,7 @@
       <plugin>
         <groupId>ch.ivyteam.maven</groupId>
         <artifactId>jira-plugin</artifactId>
-        <version>14.0.0</version>
+        <version>14.0.1</version>
         <executions>
           <execution>
             <id>create-new-version-in-jira</id>

@@ -56,7 +56,7 @@
           <plugin>
             <groupId>ch.ivyteam.maven</groupId>
             <artifactId>jira-plugin</artifactId>
-            <version>14.0.0</version>
+            <version>14.0.1</version>
             <executions>
               <execution>
                 <id>generate-release-notest</id>
