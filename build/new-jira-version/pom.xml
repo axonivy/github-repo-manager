@@ -20,7 +20,7 @@
       <plugin>
         <groupId>ch.ivyteam.maven</groupId>
         <artifactId>jira-plugin</artifactId>
-        <version>14.0.0</version>
+        <version>14.0.1</version>
         <executions>
           <execution>
             <id>create-new-version-in-jira</id>
@@ -29,7 +29,7 @@
               <goal>jira-newVersion</goal>
             </goals>
             <configuration>
-              <jiraServerId>axonivy.jira</jiraServerId>
+              <jiraServerId>jira.axonivy</jiraServerId>
               <!-- we can not detemine automatically which was the version before -->
               <afterVersion>skip-after-version</afterVersion>
               <newVersion>${newJiraVersion}</newVersion>

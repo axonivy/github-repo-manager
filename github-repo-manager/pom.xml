@@ -56,7 +56,7 @@
           <plugin>
             <groupId>ch.ivyteam.maven</groupId>
             <artifactId>jira-plugin</artifactId>
-            <version>14.0.0</version>
+            <version>14.0.1</version>
             <executions>
               <execution>
                 <id>generate-release-notest</id>
@@ -65,7 +65,7 @@
                   <goal>generate-changelog</goal>
                 </goals>
                 <configuration>
-                  <jiraServerId>axonivy.jira</jiraServerId>
+                  <jiraServerId>jira.axonivy</jiraServerId>
                   <filterBy>project in (XIVY) AND fixVersion = ${ivy-version}</filterBy>
                   <asciiTemplate>$${key}</asciiTemplate>
                   <fileset>
