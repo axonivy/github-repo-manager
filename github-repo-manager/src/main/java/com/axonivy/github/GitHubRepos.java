@@ -10,8 +10,7 @@ public class GitHubRepos {
   }
 
 
-  public static final List<String> REPOS_TO_BRANCH = List.of(
-          "rules",
+  public static final List<String> REPOS_TO_BRANCH = List.of(          
           "engine-cockpit",
           "dev-workflow-ui",
           "core",
