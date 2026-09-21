@@ -12,6 +12,11 @@ if [ $# -eq 1 ]; then
   exit
 fi
 
+# do not convert these repositories:
+declare -a excludedRepos=(
+  "scrum-management.git"
+)
+
 # do not convert these projects:
 declare -A exclusions=(   
   ["migration-test-projects.git"]="migrate-me"
@@ -50,6 +55,10 @@ clean(){
 raiseProjects() {
   gitDir=$(pwd)
   gitName=$(basename ${gitDir})
+  if [[ " ${excludedRepos[@]} " == *" ${gitName} "* ]]; then
+    skipReason="repo is excluded from ivy project migration"
+    return
+  fi
   exclude="${exclusions[${gitName}]}"
   echo "Searching projects in ${gitDir}: excluding ${exclude}"
   projects=()
