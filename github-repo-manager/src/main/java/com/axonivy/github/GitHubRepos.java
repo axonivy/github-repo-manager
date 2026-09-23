@@ -21,7 +21,6 @@ public class GitHubRepos {
           "form-editor",
           "ui-components",
           "doc-images",
-          "case-map-ui",
           "case-map-editor",
           "thirdparty-libs",
           "swagger-ui-ivy",
