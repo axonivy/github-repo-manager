@@ -20,7 +20,6 @@ public class GitHubRepos {
           "process-editor",
           "form-editor",
           "ui-components",
-          "neo",
           "doc-images",
           "case-map-ui",
           "case-map-editor",
