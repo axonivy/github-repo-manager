@@ -23,8 +23,6 @@ public class GitHubRepos {
           "doc-images",
           "case-map-editor",
           "thirdparty-libs",
-          "swagger-ui-ivy",
-          "monaco-yaml-ivy",
           "project-build-examples",
           "vscode-designer",
           "runtimelog-view",
