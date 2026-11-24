@@ -1,4 +1,4 @@
-FROM maven:3.9.16-eclipse-temurin-25
+FROM maven:3.10.2-eclipse-temurin-25
 
 RUN apt update && \
     apt install curl git gettext-base unzip gh ssh wget rsync libatomic1 -y && \
