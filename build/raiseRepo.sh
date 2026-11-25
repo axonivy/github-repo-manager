@@ -34,6 +34,13 @@ function runRepoUpdate {
   reposToPush=()
 
   for repo in "${repos[@]}"; do
+    repoName=${repo##*/}
+    repoName=${repoName%.git}
+    if [[ " ${EXCLUDED_REPOS//,/ } " == *" ${repoName} "* ]]; then
+      echo "--> skipping repo '${repo}' because it is excluded"
+      continue
+    fi
+
      echo ""; echo "==> start converting repo '${repo}'"; echo ""
     
     branchExists=$(git ls-remote --heads ${repo} refs/heads/${sourceBranch})
