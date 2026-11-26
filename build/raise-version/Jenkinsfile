@@ -18,6 +18,7 @@ pipeline {
     booleanParam name: 'dryRun', defaultValue: true, description: 'whether the build should push the changes or not'
     string(name: 'newVersion', defaultValue: '20.0.0-SNAPSHOT', description: 'The new ivy version with -SNAPSHOT e.g. 9.1.0-SNAPSHOT')
     string(name: 'branch', defaultValue: 'master', description: 'The branch to apply this change on e.g. master, release/11.1, release/10.0')
+    string(name: 'excludedRepos', defaultValue: '', description: 'Optional comma-separated repository names to skip, e.g. core,doc')
   }
 
   stages {
@@ -30,7 +31,7 @@ pipeline {
           }
           sh "git config --global user.name 'ivy-team'"
           sh "git config --global user.email 'info@ivyteam.ch'"
-          withEnv(['GIT_SSH_COMMAND=ssh -o StrictHostKeyChecking=no']) {
+          withEnv(['GIT_SSH_COMMAND=ssh -o StrictHostKeyChecking=no', "EXCLUDED_REPOS=${params.excludedRepos}"]) {
             withCredentials([file(credentialsId: 'github-ivyteam-token-repo-manager', variable: 'GITHUB_TOKEN_FILE')]) {
               sshagent(credentials: ['github-axonivy']) {
                 sh """
